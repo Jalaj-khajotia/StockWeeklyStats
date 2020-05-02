@@ -3,6 +3,7 @@ console.log('Application loaded');
 var XLSX = require('xlsx');
 var fileName1 = '27.csv';
 var fileName2 = '30.csv';
+var minPrice = 10;
 console.log('File used is ' + fileName1);
 var workbook1 = XLSX.readFile(fileName1);
 console.log('File used is ' + fileName2);
@@ -113,7 +114,7 @@ no = 0;
 excel2.forEach(function (stock) {
     stockList2[no++] = {
         SYMBOL: stock.SYMBOL,
-		SERIES: stock.SERIES,
+        SERIES: stock.SERIES,
         OPEN2: stock.OPEN,
         HIGH2: stock.HIGH,
         LOW2: stock.LOW,
@@ -174,11 +175,12 @@ function WeeklyGainers() {
                 var riseFall = (cell.CLOSE2 - cell.OPEN1) * 100 / cell.OPEN1;
                 var roundGainer = Math.round(riseFall * 100) / 100;
                 limit = upper == 0 ? 100 : upper;
-                if (roundGainer >= lower && roundGainer < upper && cell.TOTTRDQTY1 > 10000) {
+                if (roundGainer >= lower && roundGainer < upper && cell.TOTTRDQTY1 > 10000 && cell.OPEN1 >= minPrice) {
 
                     weekGainerList[i++] = {
                         Symbol: cell.SYMBOL,
-                        Percentage: roundGainer
+                        Percentage: roundGainer,
+                        CMP: cell.CLOSE2
                     }
                 };
             });
@@ -191,9 +193,9 @@ function WeeklyGainers() {
             console.log('');
             console.log('Listing stocks which rose > ' + lower + '% but are lower than  < ' + upper + '%');
             console.log('');
-            console.log('  ' + 'Stock Name' + '\t' + 'Increase');
+            console.log('  ' + 'Stock Name' + '\t ' + '% Increase' + '   CMP');
             weekGainerList.forEach(function (stock) {
-                console.log('  ' + stock.Symbol + '\t' + stock.Percentage);
+                console.log('  ' + stock.Symbol + '\t ' + stock.Percentage + '\t     ' + stock.CMP);
             })
             // console.log(weekGainerList);
             readline.close()
@@ -214,7 +216,8 @@ function WeeklyLoosers() {
 
                     weekLooserList[i++] = {
                         Symbol: cell.SYMBOL,
-                        Percentage: roundGainer
+                        Percentage: roundGainer,
+                        CMP: cell.CLOSE2
                     }
                 };
             });
@@ -227,9 +230,10 @@ function WeeklyLoosers() {
             console.log('');
             console.log('Listing stocks which fell > ' + lower + '% but are lower than  < ' + upper + '%');
             console.log('');
-            console.log('  ' + 'Stock Name' + '\t' + 'Increase');
+
+            console.log('  ' + 'Stock Name' + '\t ' + '% Decrease' + '   CMP');
             weekLooserList.forEach(function (stock) {
-                console.log('  ' + stock.Symbol + '\t' + stock.Percentage);
+                console.log('  ' + stock.Symbol + '\t ' + stock.Percentage + '\t     ' + stock.CMP);
             })
             // console.log(weekLooserList);
             readline.close()
