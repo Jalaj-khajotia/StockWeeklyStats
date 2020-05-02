@@ -1,0 +1,14 @@
+{
+  "name": "stockstats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "proj.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jalaj khajotia",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.16.0"
+  }
+}
