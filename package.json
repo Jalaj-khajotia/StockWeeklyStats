@@ -9,6 +9,6 @@
   "author": "jalaj khajotia",
   "license": "ISC",
   "dependencies": {
-    "xlsx": "^0.16.0"
+    "xlsx": "^0.17.0"
   }
 }
